@@ -32,14 +32,6 @@ We’re currently:
 
 ## 🛠️ Planned Tech Stack
 
-| Layer        | Technology      |
-|--------------|------------------|
-| Backend      | Python, Django   |
-| AI Engine    | OpenAI API       |
-| Frontend     | (TBD) Likely React |
-| Database     | Thinking... |
-| Auth         | Anonymous sessions / tokens |
-| Deployment   | TBD (Render, Railway, Vercel, etc.) |
 
 > Want to suggest a tech stack improvement? Open an issue!
 
@@ -101,7 +93,7 @@ We’re currently:
 
 ---
 
-## 🤝 Wanna Join the Party?
+## 🤝 Wanna Join?
 
 Start a discussion or open an issue with your thoughts!
 
@@ -109,7 +101,7 @@ Start a discussion or open an issue with your thoughts!
 
 ## 📜 Disclaimer
 
-This project is for **fun and humor**, not for promoting harmful or offensive content.
+This project is for **fun and humor** not for promoting harmful or offensive content.
 
 ---
 
