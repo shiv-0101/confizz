@@ -20,8 +20,10 @@ from django.urls import path, include
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    # include confessions app urls
-    path("", include("confessions.urls", namespace="confessions")),
+    # include home app urls for the root path
+    path("", include("home.urls")),
+    # include confessions app urls with a prefix
+    path("confessions/", include("confessions.urls", namespace="confessions")),
 ]
     
 
