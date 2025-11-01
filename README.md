@@ -25,7 +25,6 @@ We're combining:
 
 We’re currently:
 - Gathering ideas 💡
-- Designing the system architecture 📐
 - Scoping out MVP features 🧩
 
 ---
@@ -41,8 +40,8 @@ We’re currently:
 
 - [x] Anonymous confessions
 - [ ] AI replies (150 words max, sarcastic/funny tone)
-- [ ] Groups based on themes
-- [ ] Likes & comments
+- [X] Groups based on themes
+- [X] Likes & comments
 - [ ] Simple anonymous login
 - [ ] Responsive web UI
 
