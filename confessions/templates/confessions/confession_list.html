@@ -12,14 +12,21 @@
             {% for confession in confessions %}
             <div class="card mb-3">
                 <div class="card-body" data-confession-id="{{ confession.pk }}">
-                    <p class="card-text">{{ confession.content }}</p>
+                    <p class="card-text">
+                        {% if confession.author %}
+                            <small class="text-muted">u/{{ confession.author.username }}</small><br>
+                        {% else %}
+                            <small class="text-muted">Anonymous</small><br>
+                        {% endif %}
+                        {{ confession.content }}
+                    </p>
                     <hr>
                     <div class="d-flex align-items-center">
                         <button type="button" class="btn btn-sm btn-outline-primary me-2 upvote-btn">
                             <i class="bi bi-arrow-up-circle"></i> <span class="badge bg-primary upvote-count">0</span>
                         </button>
                         <a class="btn btn-sm btn-outline-secondary me-2" data-bs-toggle="collapse" href="#comments-{{ confession.pk }}" role="button" aria-expanded="false" aria-controls="comments-{{ confession.pk }}">
-                            <i class="bi bi-chat-dots"></i> Comment
+                            <i class="bi bi-chat-dots"></i> {{ confession.comments.count }}
                         </a>
                         <a href="#" class="btn btn-sm btn-outline-info summarise-btn">
                             <i class="bi bi-robot"></i> AI Summarise
@@ -32,7 +39,14 @@
                         <h6 class="card-subtitle mb-2 text-muted">Comments ({{ confession.comments.count }})</h6>
                         <div class="list-group list-group-flush small">
                             {% for comment in confession.comments.all %}
-                                <div class="list-group-item px-0 py-2">{{ comment.content }}</div>
+                                <div class="list-group-item px-0 py-2">
+                                    {% if comment.author %}
+                                        <small class="text-muted">u/{{ comment.author.username }}</small><br>
+                                    {% else %}
+                                        <small class="text-muted">Anonymous</small><br>
+                                    {% endif %}
+                                    {{ comment.content }}
+                                </div>
                             {% empty %}
                                 <div class="list-group-item px-0 py-2 text-muted">No comments yet. Be the first!</div>
                             {% endfor %}
@@ -88,7 +102,6 @@
                             <div class="list-group-item px-0 py-2">This is the content I'm here for.</div>
                         </div>
                     </div>
-                    <!-- Placeholder for AI Summary -->
                     <div class="collapse mt-3" id="summary-dummy">
                         <hr>
                         <p class="card-text small text-muted" id="summary-content-dummy">Summary will appear here...</p>
