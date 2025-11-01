@@ -20,7 +20,7 @@ def summarize_comments(request, pk):
     Expects a POST request with a JSON body containing 'comments_text'.
     """
     # Ensure the API key is configured in settings
-    api_key = os.environ.get('GEMINI_API_KEY', 'AIzaSyCVr1OxeR4v_uP1QqTYbjvR0Zk1p9UkTKA')
+    api_key = os.environ.get('GEMINI_API_KEY')
     if not api_key:
         return JsonResponse({'error': 'Gemini API key not configured. Please set GEMINI_API_KEY in your environment.'}, status=500)
 
@@ -49,6 +49,13 @@ def summarize_comments(request, pk):
         return JsonResponse({'error': str(e)}, status=500)
 
 def confession_list(request):
+    if request.method == 'POST':
+        content = request.POST.get('content')
+        if content:
+            Confession.objects.create(content=content)  # Anonymous, no author
+            messages.success(request, 'Your anonymous confession has been posted!')
+            return redirect('confessions:confession_list')
+
     confessions = Confession.objects.all().order_by('-created_at')
     comment_form = CommentForm()
     return render(request, 'confessions/confession_list.html', {

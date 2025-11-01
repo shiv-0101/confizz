@@ -8,6 +8,22 @@
         <h1 class="mb-4">Recent Confessions</h1>
         {% csrf_token %} {# This is crucial for making secure POST requests from JavaScript #}
 
+        <!-- Anonymous Confession Form -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title">Share an Anonymous Confession</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" action="{% url 'confessions:add_anonymous_confession' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <textarea class="form-control" id="anonymous_content" name="content" rows="3" placeholder="Share your anonymous confession..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Post Anonymously</button>
+                </form>
+            </div>
+        </div>
+
         {% if confessions %}
             {% for confession in confessions %}
             <div class="card mb-3">
