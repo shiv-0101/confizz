@@ -1,0 +1,199 @@
+{% extends 'confessions/base.html' %}
+
+{% block title %}Home - AI Confizz{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <h1 class="mb-4">Recent Confessions</h1>
+        {% csrf_token %} {# This is crucial for making secure POST requests from JavaScript #}
+
+        <!-- Anonymous Confession Form -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title">Share an Anonymous Confession</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" action="{% url 'confessions:add_anonymous_confession' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <textarea class="form-control" id="anonymous_content" name="content" rows="3" placeholder="Share your anonymous confession..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Post Anonymously</button>
+                </form>
+            </div>
+        </div>
+
+        {% if confessions %}
+            {% for confession in confessions %}
+            <div class="card mb-3">
+                <div class="card-body" data-confession-id="{{ confession.pk }}">
+                    <p class="card-text">
+                        {% if confession.author %}
+                            <small class="text-muted">u/{{ confession.author.username }}</small><br>
+                        {% else %}
+                            <small class="text-muted">Anonymous</small><br>
+                        {% endif %}
+                        {{ confession.content }}
+                    </p>
+                    <hr>
+                    <div class="d-flex align-items-center">
+                        <button type="button" class="btn btn-sm btn-outline-primary me-2 upvote-btn">
+                            <i class="bi bi-arrow-up-circle"></i> <span class="badge bg-primary upvote-count">0</span>
+                        </button>
+                        <a class="btn btn-sm btn-outline-secondary me-2" data-bs-toggle="collapse" href="#comments-{{ confession.pk }}" role="button" aria-expanded="false" aria-controls="comments-{{ confession.pk }}">
+                            <i class="bi bi-chat-dots"></i> {{ confession.comments.count }}
+                        </a>
+                        <a href="#" class="btn btn-sm btn-outline-info summarise-btn">
+                            <i class="bi bi-robot"></i> AI Summarise
+                        </a>
+                        <small class="text-muted ms-auto">{{ confession.created_at|timesince }} ago</small>
+                    </div>
+                    <!-- Comments Section (Collapsible) -->
+                    <div class="collapse mt-3" id="comments-{{ confession.pk }}">
+                        <hr>
+                        <h6 class="card-subtitle mb-2 text-muted">Comments ({{ confession.comments.count }})</h6>
+                        <div class="list-group list-group-flush small">
+                            {% for comment in confession.comments.all %}
+                                <div class="list-group-item px-0 py-2">
+                                    {% if comment.author %}
+                                        <small class="text-muted">u/{{ comment.author.username }}</small><br>
+                                    {% else %}
+                                        <small class="text-muted">Anonymous</small><br>
+                                    {% endif %}
+                                    {{ comment.content }}
+                                </div>
+                            {% empty %}
+                                <div class="list-group-item px-0 py-2 text-muted">No comments yet. Be the first!</div>
+                            {% endfor %}
+                        </div>
+                        <!-- Add Comment Form -->
+                        <form action="{% url 'confessions:add_comment' confession.pk %}" method="post" class="mt-3">
+                            {% csrf_token %}
+                            <div class="input-group">
+                                {{ comment_form }}
+                                <button class="btn btn-sm btn-outline-secondary" type="submit">Post</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- Placeholder for AI Summary -->
+                    <div class="collapse mt-3" id="summary-{{ confession.pk }}">
+                        <hr>
+                        <p class="card-text small text-muted" id="summary-content-{{ confession.pk }}">Summary will appear here...</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="card mb-3">
+                <div class="card-body" data-confession-id="dummy">
+                    <p class="card-text">I once submitted the same assignment twice and still got a C. Is this talent or luck? This is a dummy confession to show you how things will look!</p>
+                    <hr>
+                    <div class="d-flex align-items-center">
+                        <button type="button" class="btn btn-sm btn-outline-primary me-2 upvote-btn">
+                            <i class="bi bi-arrow-up-circle"></i> <span class="badge bg-primary upvote-count">0</span>
+                        </button>
+                        <a class="btn btn-sm btn-outline-secondary me-2" data-bs-toggle="collapse" href="#comments-dummy" role="button" aria-expanded="false" aria-controls="comments-dummy">
+                            <i class="bi bi-chat-dots"></i> Comment
+                        </a>
+                        <a href="#" class="btn btn-sm btn-outline-info disabled">
+                            <i class="bi bi-robot"></i> AI Summarise
+                        </a>
+                        <small class="text-muted ms-auto">just now</small>
+                    </div>
+                    <!-- Comments Section (Collapsible) -->
+                    <div class="collapse mt-3" id="comments-dummy">
+                        <hr>
+                        <h6 class="card-subtitle mb-2 text-muted">Comments (10)</h6>
+                        <div class="list-group list-group-flush small">
+                            <div class="list-group-item px-0 py-2">Definitely talent. Can you teach me?</div>
+                            <div class="list-group-item px-0 py-2">I did that once and got caught for plagiarism... by my own previous submission.</div>
+                            <div class="list-group-item px-0 py-2">The professor probably just sighed and gave you a C for the sheer audacity.</div>
+                            <div class="list-group-item px-0 py-2">This is the kind of energy I need in my life.</div>
+                            <div class="list-group-item px-0 py-2">Are you sure you didn't just unlock a secret university life hack?</div>
+                            <div class="list-group-item px-0 py-2">Meanwhile, I study for weeks and still get a C.</div>
+                            <div class="list-group-item px-0 py-2">That's not a confession, that's a resume skill.</div>
+                            <div class="list-group-item px-0 py-2">Big brain move.</div>
+                            <div class="list-group-item px-0 py-2">I'm not saying you should do it again, but... what if you got a B?</div>
+                            <div class="list-group-item px-0 py-2">This is the content I'm here for.</div>
+                        </div>
+                    </div>
+                    <div class="collapse mt-3" id="summary-dummy">
+                        <hr>
+                        <p class="card-text small text-muted" id="summary-content-dummy">Summary will appear here...</p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Use event delegation to handle all clicks within the document body
+    document.body.addEventListener('click', function(event) {
+        const upvoteButton = event.target.closest('.upvote-btn');
+        const summariseButton = event.target.closest('.summarise-btn');
+
+        // --- Handle Upvote Clicks (Client-side demo) ---
+        if (upvoteButton) {
+            const button = upvoteButton;
+            const countSpan = button.querySelector('.upvote-count');
+            let currentCount = parseInt(countSpan.textContent, 10);
+            countSpan.textContent = currentCount + 1;
+        }
+
+        // --- Handle "AI Summarise" Clicks ---
+        if (summariseButton) {
+            event.preventDefault(); // Stop the link from navigating
+
+            const cardBody = summariseButton.closest('.card-body');
+            const confessionId = cardBody.dataset.confessionId;
+            
+            // Handle the dummy card separately
+            if (confessionId === 'dummy') {
+                alert("This is a dummy card. The AI feature works on real confessions!");
+                return;
+            }
+
+            const commentsContainer = cardBody.querySelector(`#comments-${confessionId}`);
+            const summaryContainer = cardBody.querySelector(`#summary-${confessionId}`);
+            const summaryContent = cardBody.querySelector(`#summary-content-${confessionId}`);
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            // Show a loading state
+            summaryContent.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generating summary...';
+            new bootstrap.Collapse(summaryContainer, { toggle: false }).show();
+
+            // Collect all comment texts
+            const commentElements = commentsContainer.querySelectorAll('.list-group-item');
+            const commentsText = Array.from(commentElements).map(el => el.textContent.trim()).join('\n');
+
+            // Make the API call to your backend
+            fetch(`/confessions/confession/${confessionId}/summarize/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken,
+                },
+                body: JSON.stringify({ comments_text: commentsText })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.summary) {
+                    summaryContent.textContent = data.summary;
+                } else {
+                    summaryContent.textContent = `Error: ${data.error || 'An unknown error occurred.'}`;
+                }
+            })
+            .catch(error => {
+                console.error('Summarization Error:', error);
+                summaryContent.textContent = 'Failed to fetch summary. Check the console for details.';
+            });
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'confessions/base.html' %}
+
+{% block title %}My Dashboard - AI Confizz{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <h1 class="mb-4">My Dashboard</h1>
+        <p>Welcome to your personal dashboard, {{ user.username }}!</p>
+
+        <h2>Add a New Confession</h2>
+        <form method="post" class="mb-4">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="id_content" class="form-label">Your Confession</label>
+                <textarea class="form-control" id="id_content" name="content" rows="4" placeholder="Share your anonymous confession..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Confession</button>
+        </form>
+
+        <h2>Your Confessions</h2>
+        {% if user_confessions %}
+            {% for confession in user_confessions %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <p class="card-text">{{ confession.content }}</p>
+                    <small class="text-muted">Posted {{ confession.created_at|timesince }} ago</small>
+                    <div class="mt-2">
+                        <span class="badge bg-primary">{{ confession.upvotes }} upvotes</span>
+                        <span class="badge bg-secondary">{{ confession.comments.count }} comments</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>You haven't posted any confessions yet. Share your first one above!</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
