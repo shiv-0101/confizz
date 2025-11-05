@@ -23,3 +23,11 @@
 - Test all changes locally.
 - Ensure no sensitive API keys are committed (check .gitignore includes .env).
 - Commit: "Update .gitignore to include .env if not already"
+
+## Fix Gemini API Configuration
+- Install python-dotenv for environment variable management.
+- Create .env file with GEMINI_API_KEY placeholder.
+- Update confizz/settings.py to load .env file.
+- Add GEMINI_API_KEY to settings.py.
+- Update confessions/views.py and confizz/confessions/views.py to use settings.GEMINI_API_KEY instead of os.environ.get.
+- Test the summarize_comments endpoint after setting the API key.
