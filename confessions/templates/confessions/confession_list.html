@@ -4,7 +4,24 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-md-8 mx-auto">
+    <div class="col-md-3">
+        <!-- Sidebar -->
+        <div class="bg-light p-3 rounded">
+            <h5>Navigation</h5>
+            <ul class="list-unstyled">
+                <li class="mb-2"><a href="{% url 'confessions:confession_list' %}" class="text-decoration-none"><i class="bi bi-house"></i> Home</a></li>
+                {% if user.is_authenticated %}
+                <li class="mb-2"><a href="{% url 'confessions:user_dashboard' %}" class="text-decoration-none"><i class="bi bi-person"></i> Dashboard</a></li>
+                <li class="mb-2"><a href="{% url 'confessions:logout' %}" class="text-decoration-none"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+                {% else %}
+                <li class="mb-2"><a href="{% url 'confessions:login' %}" class="text-decoration-none"><i class="bi bi-box-arrow-in-right"></i> Login</a></li>
+                <li class="mb-2"><a href="{% url 'confessions:signup' %}" class="text-decoration-none"><i class="bi bi-person-plus"></i> Sign Up</a></li>
+                {% endif %}
+                <li class="mb-2"><a href="{% url 'confessions:fizzzones' %}" class="text-decoration-none"><i class="bi bi-collection"></i> Fizzzones</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-9">
         <h1 class="mb-4">Recent Confessions</h1>
         {% csrf_token %} {# This is crucial for making secure POST requests from JavaScript #}
 

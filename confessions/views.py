@@ -122,3 +122,6 @@ def logout_view(request):
 
 def hello_world(request):
     return render(request, "confessions/helloworld.html")
+
+def fizzzones(request):
+    return render(request, 'confessions/fizzzones.html')

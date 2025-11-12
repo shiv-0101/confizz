@@ -15,7 +15,7 @@ This is a **work-in-progress** project — an anonymous confessions app with a p
 We're combining:
 - 🕵️ Anonymous user confessions
 - 🤖 OpenAI-generated replies (funny, sarcastic, sassy — you choose)
-- 💬 Group-based communities (e.g., "College Life", "Workplace Woes", etc.)
+- 💬 Fizzzone-based communities (e.g., "College Life", "Workplace Woes", etc.)
 - 👍 Social interaction features (likes, comments)
 - 🧠 Future moderation tools (because chaos needs boundaries)
 
@@ -40,7 +40,7 @@ We’re currently:
 
 - [x] Anonymous confessions
 - [ ] AI replies (150 words max, sarcastic/funny tone)
-- [X] Groups based on themes
+- [X] Fizzzones based on themes
 - [X] Likes & comments
 - [ ] Simple anonymous login
 - [ ] Responsive web UI
@@ -61,34 +61,34 @@ We’re currently:
 ## 👣 Meet Shiv — Example User Flow
 
 1. **Shiv lands on the homepage.**
-   - He sees a welcoming message and a feed of recent confessions from various groups.
+   - He sees a welcoming message and a feed of recent confessions from various fizzzones.
 
 2. **Shiv signs up (or continues anonymously).**
    - He chooses a username or proceeds as an anonymous user.
 
 3. **Shiv browses the feed.**
-   - He explores confessions in the main feed and notices groups like “College Life,” “Workplace Woes,” and “Relationships.”
+   - He explores confessions in the main feed and notices fizzzones like “College Life,” “Workplace Woes,” and “Relationships.”
 
-4. **Shiv joins a group.**
-   - Interested in “College Life,” Shiv joins the group to see more relevant confessions.
+4. **Shiv joins a fizzzone.**
+   - Interested in “College Life,” Shiv joins the fizzzone to see more relevant confessions.
 
 5. **Shiv posts a confession.**
-   - He clicks “Add Confession,” writes:  
+   - He clicks “Add Confession,” writes:
      _“I once submitted the same assignment twice and still got a C. Is this talent or luck?”_
-   - He selects the “College Life” group and submits.
+   - He selects the “College Life” fizzzone and submits.
 
 6. **AI generates a reply.**
-   - Instantly, a witty AI response appears under his confession:  
+   - Instantly, a witty AI response appears under his confession:
      _“That’s not luck, Shiv, that’s a masterclass in academic efficiency. Next time, try submitting it thrice for a B!”_
 
 7. **Shiv interacts with the feed.**
    - He likes a few confessions and leaves a funny comment on another user’s post.
 
-8. **Shiv creates a new group.**
-   - He starts a group called “Foodies Anonymous” for food-related confessions.
+8. **Shiv creates a new fizzzone.**
+   - He starts a fizzzone called “Foodies Anonymous” for food-related confessions.
 
 9. **Shiv invites friends.**
-   - He shares the group link with friends to join and post their own confessions.
+   - He shares the fizzzone link with friends to join and post their own confessions.
 
 ---
 
