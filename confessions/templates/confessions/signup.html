@@ -3,155 +3,36 @@
 {% block title %}Sign Up - AI Confizz{% endblock %}
 
 {% block content %}
-<style>
-    .auth-container {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: calc(100vh - 200px);
-        padding: 2rem 0;
-    }
-    
-    .auth-form-wrapper {
-        width: 100%;
-        max-width: 400px;
-        padding: 2rem;
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-        border: 1px solid #f0f0f0;
-    }
-    
-    .auth-form-wrapper h1 {
-        font-size: 1.75rem;
-        font-weight: 600;
-        color: #1a1a1a;
-        margin-bottom: 0.5rem;
-        letter-spacing: -0.5px;
-    }
-    
-    .auth-form-wrapper .subtitle {
-        font-size: 0.95rem;
-        color: #666;
-        margin-bottom: 2rem;
-        font-weight: 400;
-    }
-    
-    .form-group {
-        margin-bottom: 1.5rem;
-    }
-    
-    .form-group label {
-        display: block;
-        font-size: 0.9rem;
-        font-weight: 500;
-        color: #333;
-        margin-bottom: 0.5rem;
-        letter-spacing: 0.3px;
-    }
-    
-    .form-group input[type="text"],
-    .form-group input[type="password"],
-    .form-group input[type="email"] {
-        width: 100%;
-        padding: 0.75rem 0.875rem;
-        border: 1px solid #e0e0e0;
-        border-radius: 6px;
-        font-size: 0.95rem;
-        transition: all 0.2s ease;
-        background: #fafafa;
-        font-family: inherit;
-        box-sizing: border-box;
-    }
-    
-    .form-group input[type="text"]:focus,
-    .form-group input[type="password"]:focus,
-    .form-group input[type="email"]:focus {
-        outline: none;
-        background: white;
-        border-color: #999;
-        box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
-    }
-    
-    .form-errors {
-        color: #d32f2f;
-        font-size: 0.85rem;
-        margin-top: 0.375rem;
-        display: block;
-    }
-    
-    .submit-btn {
-        width: 100%;
-        padding: 0.85rem 1rem;
-        background: #1a1a1a;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        font-size: 0.95rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        margin-top: 0.5rem;
-        letter-spacing: 0.3px;
-    }
-    
-    .submit-btn:hover {
-        background: #333;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    }
-    
-    .submit-btn:active {
-        transform: scale(0.98);
-    }
-    
-    .auth-footer {
-        margin-top: 1.5rem;
-        text-align: center;
-        padding-top: 1.5rem;
-        border-top: 1px solid #f0f0f0;
-    }
-    
-    .auth-footer p {
-        font-size: 0.9rem;
-        color: #666;
-        margin: 0;
-    }
-    
-    .auth-footer a {
-        color: #1a1a1a;
-        text-decoration: none;
-        font-weight: 500;
-        transition: color 0.2s ease;
-    }
-    
-    .auth-footer a:hover {
-        color: #666;
-    }
-</style>
-
-<div class="auth-container">
-    <div class="auth-form-wrapper">
-        <h1>Create Account</h1>
-        <p class="subtitle">Join AI Confizz today</p>
+<div class="reddit-auth-container">
+    <div class="reddit-auth-form">
+        <h1><span class="material-icons" style="vertical-align: middle; margin-right: 0.75rem; font-size: 2rem;">person_add</span>Join Confizz</h1>
+        <p>Create your account and start sharing</p>
         
         <form method="post" novalidate>
             {% csrf_token %}
+            
             {% for field in form %}
-                <div class="form-group">
+                <div class="reddit-form-group">
                     <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                     {{ field }}
                     {% if field.errors %}
-                        {% for error in field.errors %}
-                            <span class="form-errors">{{ error }}</span>
-                        {% endfor %}
+                        <div style="color: var(--error-color); font-size: 0.85rem; margin-top: 0.375rem;">
+                            {% for error in field.errors %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+                        </div>
                     {% endif %}
                 </div>
             {% endfor %}
-            <button type="submit" class="submit-btn">Create Account</button>
+            
+            <button type="submit" class="reddit-btn" style="width: 100%; margin-top: 1rem;">
+                <span class="material-icons" style="vertical-align: middle; margin-right: 0.5rem; font-size: 1.1rem;">check_circle</span>
+                Create Account
+            </button>
         </form>
         
-        <div class="auth-footer">
-            <p>Already have an account? <a href="{% url 'confessions:login' %}">Sign in</a></p>
+        <div class="auth-link">
+            Already have an account? <a href="{% url 'confessions:login' %}">Sign in here</a>
         </div>
     </div>
 </div>
