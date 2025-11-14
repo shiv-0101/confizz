@@ -3,55 +3,128 @@
 {% block title %}My Dashboard - AI Confizz{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-3">
-        <!-- Sidebar -->
-        <div class="bg-light p-3 rounded">
-            <h5>Navigation</h5>
-            <ul class="list-unstyled">
-                <li class="mb-2"><a href="{% url 'confessions:confession_list' %}" class="text-decoration-none"><i class="bi bi-house"></i> Home</a></li>
-                {% if user.is_authenticated %}
-                <li class="mb-2"><a href="{% url 'confessions:user_dashboard' %}" class="text-decoration-none"><i class="bi bi-person"></i> Dashboard</a></li>
-                <li class="mb-2"><a href="{% url 'confessions:logout' %}" class="text-decoration-none"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
-                {% else %}
-                <li class="mb-2"><a href="{% url 'confessions:login' %}" class="text-decoration-none"><i class="bi bi-box-arrow-in-right"></i> Login</a></li>
-                <li class="mb-2"><a href="{% url 'confessions:signup' %}" class="text-decoration-none"><i class="bi bi-person-plus"></i> Sign Up</a></li>
-                {% endif %}
-                <li class="mb-2"><a href="{% url 'confessions:fizzzones' %}" class="text-decoration-none"><i class="bi bi-collection"></i> Fizzzones</a></li>
-            </ul>
+<!-- Left Sidebar -->
+<aside class="reddit-sidebar">
+    <h3><span class="material-icons" style="vertical-align: middle; margin-right: 0.5rem; font-size: 1.3rem;">menu</span> Navigation</h3>
+    <ul class="reddit-sidebar-nav">
+        <li><a href="{% url 'confessions:confession_list' %}"><span class="material-icons">home</span> Home</a></li>
+        <li><a href="{% url 'confessions:user_dashboard' %}" class="active"><span class="material-icons">dashboard</span> Dashboard</a></li>
+        <li><a href="{% url 'confessions:logout' %}"><span class="material-icons">exit_to_app</span> Logout</a></li>
+        <li><a href="{% url 'confessions:fizzzones' %}"><span class="material-icons">collections</span> Communities</a></li>
+    </ul>
+</aside>
+
+<!-- Main Feed -->
+<main class="reddit-feed">
+    <!-- User Stats Card -->
+    <div class="reddit-form-card">
+        <h3><span class="material-icons" style="vertical-align: middle; margin-right: 0.5rem;">person</span> Your Profile</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="reddit-info-box">
+                <strong>Username:</strong><br>
+                <span style="font-size: 1.1rem; color: var(--primary-color);">{{ user.username }}</span>
+            </div>
+            <div class="reddit-info-box">
+                <strong>Member Since:</strong><br>
+                <span style="color: var(--text-secondary);">{{ user.date_joined|date:"M d, Y" }}</span>
+            </div>
         </div>
     </div>
-    <div class="col-md-9">
-        <h1 class="mb-4">My Dashboard</h1>
-        <p>Welcome to your personal dashboard, {{ user.username }}!</p>
 
-        <h2>Add a New Confession</h2>
-        <form method="post" class="mb-4">
+    <!-- Add New Confession Form -->
+    <div class="reddit-form-card">
+        <h3><span class="material-icons" style="vertical-align: middle; margin-right: 0.5rem;">edit</span> Share a New Confession</h3>
+        <form method="post">
             {% csrf_token %}
-            <div class="mb-3">
-                <label for="id_content" class="form-label">Your Confession</label>
-                <textarea class="form-control" id="id_content" name="content" rows="4" placeholder="Share your anonymous confession..." required></textarea>
+            <div class="reddit-form-group">
+                <label for="id_content">Your Confession</label>
+                <textarea id="id_content" name="content" rows="4" placeholder="Share your thoughts, confessions, or secrets..." required></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">Submit Confession</button>
+            <button type="submit" class="reddit-btn">
+                <span class="material-icons" style="vertical-align: middle; margin-right: 0.5rem;">send</span>
+                Submit Confession
+            </button>
         </form>
+    </div>
 
-        <h2>Your Confessions</h2>
+    <!-- Your Confessions -->
+    <div style="margin-top: 2rem;">
+        <h2 style="color: var(--text-primary); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem;">
+            <span class="material-icons">history</span>
+            Your Confessions
+        </h2>
+        
         {% if user_confessions %}
             {% for confession in user_confessions %}
-            <div class="card mb-3">
-                <div class="card-body">
-                    <p class="card-text">{{ confession.content }}</p>
-                    <small class="text-muted">Posted {{ confession.created_at|timesince }} ago</small>
-                    <div class="mt-2">
-                        <span class="badge bg-primary">{{ confession.upvotes }} upvotes</span>
-                        <span class="badge bg-secondary">{{ confession.comments.count }} comments</span>
+            <article class="reddit-post">
+                <div class="reddit-post-container">
+                    <!-- Vote Section -->
+                    <div class="reddit-post-votes">
+                        <button disabled style="cursor: not-allowed;">
+                            <span class="material-icons">arrow_upward</span>
+                        </button>
+                        <span class="reddit-vote-count">{{ confession.upvotes }}</span>
+                        <button disabled style="cursor: not-allowed;">
+                            <span class="material-icons">arrow_downward</span>
+                        </button>
+                    </div>
+
+                    <!-- Post Content -->
+                    <div class="reddit-post-content">
+                        <div class="reddit-post-header">
+                            <span class="reddit-post-author">u/{{ user.username }}</span>
+                            <span class="reddit-post-meta">{{ confession.created_at|timesince }} ago</span>
+                        </div>
+
+                        <p class="reddit-post-text">{{ confession.content }}</p>
+
+                        <!-- Post Stats -->
+                        <div class="reddit-post-actions">
+                            <div class="reddit-post-action" style="cursor: default;">
+                                <span class="material-icons">favorite</span>
+                                <span>{{ confession.upvotes }} Upvotes</span>
+                            </div>
+                            <div class="reddit-post-action" style="cursor: default;">
+                                <span class="material-icons">chat_bubble</span>
+                                <span>{{ confession.comments.count }} Comments</span>
+                            </div>
+                            <div class="reddit-post-action" style="cursor: default;">
+                                <span class="material-icons">schedule</span>
+                                <span>{{ confession.created_at|date:"M d, Y H:i" }}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </article>
             {% endfor %}
         {% else %}
-            <p>You haven't posted any confessions yet. Share your first one above!</p>
+            <div style="text-align: center; padding: 2rem; background-color: var(--surface-color); border-radius: 8px; border: 1px dashed var(--border-color);">
+                <span class="material-icons" style="font-size: 3rem; color: var(--text-secondary); display: block; margin-bottom: 1rem;">note_add</span>
+                <p style="color: var(--text-secondary); font-size: 1.1rem;">You haven't posted any confessions yet.</p>
+                <p style="color: var(--text-secondary);">Share your first confession above!</p>
+            </div>
         {% endif %}
     </div>
-</div>
+</main>
+
+<!-- Right Sidebar -->
+<aside class="reddit-right-sidebar">
+    <h3><span class="material-icons" style="vertical-align: middle; margin-right: 0.5rem;">trending_up</span> Your Stats</h3>
+    <div class="reddit-info-box">
+        <strong>📊 Confessions</strong><br>
+        Total: {{ user_confessions|length }}
+    </div>
+    <div class="reddit-info-box">
+        <strong>👍 Total Upvotes</strong><br>
+        {{ total_upvotes|default:"0" }}
+    </div>
+    <div class="reddit-info-box">
+        <strong>💬 Comments Received</strong><br>
+        {{ total_comments|default:"0" }}
+    </div>
+    <div class="reddit-info-box">
+        <strong>🎯 Engagement</strong><br>
+        <small>Keep sharing to boost engagement!</small>
+    </div>
+</aside>
 {% endblock %}

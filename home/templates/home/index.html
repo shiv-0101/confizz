@@ -1,20 +1,317 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Welcome to Confizz</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Confizz - Share Your Secrets</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link href="https://cdn.jsdelivr.net/npm/@mui/material@5.14.0/dist/mui.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/reddit-theme.css' %}">
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        .hero-section {
+            background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
+            padding: 6rem 2rem;
             text-align: center;
-            margin-top: 100px;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        h1 { color: #333; }
-        p { color: #666; }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-icon {
+            font-size: 5rem;
+            margin-bottom: 2rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .hero-btn {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border: 2px solid white;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+
+        .hero-btn-primary {
+            background-color: white;
+            color: #818cf8;
+        }
+
+        .hero-btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-btn-secondary {
+            background-color: transparent;
+            color: white;
+        }
+
+        .hero-btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .features-section {
+            background-color: var(--background-color);
+            padding: 4rem 2rem;
+        }
+
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 3rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background-color: var(--surface-color);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(129, 140, 248, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .cta-section {
+            background-color: var(--surface-color);
+            padding: 4rem 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .cta-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            padding: 0.875rem 1.75rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .cta-btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-btn-primary:hover {
+            background-color: #7c3aed;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(129, 140, 248, 0.3);
+        }
+
+        .cta-btn-secondary {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            background-color: transparent;
+            cursor: pointer;
+        }
+
+        .cta-btn-secondary:hover {
+            background-color: rgba(129, 140, 248, 0.1);
+        }
     </style>
 </head>
 <body>
-    <h1>Welcome to Confizz!</h1>
-    <p>This is Confizz homepage 🎉</p>
+    <!-- Navigation -->
+    <nav class="reddit-appbar">
+        <div class="reddit-navbar">
+            <a href="/" class="reddit-logo">
+                <span class="material-icons" style="font-size: 2rem; color: #818cf8;">forum</span>
+                Confizz
+            </a>
+            <div class="reddit-nav-links">
+                <a href="{% url 'confessions:login' %}">Login</a>
+                <a href="{% url 'confessions:signup' %}" class="reddit-btn" style="padding: 0.5rem 1.25rem; font-size: 0.85rem; margin: 0;">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="hero-content">
+            <div class="hero-icon">🎭</div>
+            <h1 class="hero-title">Share Your Secrets Anonymously</h1>
+            <p class="hero-subtitle">Connect with thousands of people sharing their real thoughts, confessions, and experiences. No judgment, just community.</p>
+            <div class="hero-buttons">
+                <a href="{% url 'confessions:confession_list' %}" class="hero-btn hero-btn-primary">
+                    <span class="material-icons" style="font-size: 1.3rem;">explore</span>
+                    Explore Now
+                </a>
+                <a href="{% url 'confessions:signup' %}" class="hero-btn hero-btn-secondary">
+                    <span class="material-icons" style="font-size: 1.3rem;">person_add</span>
+                    Join Us
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="features-section">
+        <div class="features-container">
+            <h2 class="features-title">Why Choose Confizz?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <span class="material-icons" style="font-size: 3rem;">privacy_tip</span>
+                    </div>
+                    <h3 class="feature-title">Complete Anonymity</h3>
+                    <p class="feature-desc">Share your thoughts without revealing your identity. Your secrets are safe with us.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <span class="material-icons" style="font-size: 3rem;">thumb_up</span>
+                    </div>
+                    <h3 class="feature-title">Community Support</h3>
+                    <p class="feature-desc">Upvote, comment, and connect with others who share similar experiences.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <span class="material-icons" style="font-size: 3rem;">auto_awesome</span>
+                    </div>
+                    <h3 class="feature-title">AI-Powered Insights</h3>
+                    <p class="feature-desc">Get AI-generated summaries of discussions to understand key themes and patterns.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <span class="material-icons" style="font-size: 3rem;">forum</span>
+                    </div>
+                    <h3 class="feature-title">Vibrant Community</h3>
+                    <p class="feature-desc">Join thousands of users sharing real experiences and supporting each other.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <span class="material-icons" style="font-size: 3rem;">trending_up</span>
+                    </div>
+                    <h3 class="feature-title">Trending Topics</h3>
+                    <p class="feature-desc">Discover what's trending and engage with popular confessions and discussions.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <span class="material-icons" style="font-size: 3rem;">shield</span>
+                    </div>
+                    <h3 class="feature-title">Safe & Moderated</h3>
+                    <p class="feature-desc">A friendly and moderated community where everyone feels welcome and respected.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="cta-section">
+        <h2 class="cta-title">Ready to Share Your Story?</h2>
+        <div class="cta-buttons">
+            <button class="cta-btn cta-btn-primary" onclick="window.location='{% url 'confessions:signup' %}'">
+                <span class="material-icons">person_add</span>
+                Get Started Now
+            </button>
+            <button class="cta-btn cta-btn-secondary" onclick="window.location='{% url 'confessions:confession_list' %}'">
+                <span class="material-icons">explore</span>
+                Browse Anonymous
+            </button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@mui/material@5.14.0/dist/mui.min.js"></script>
 </body>
 </html>
