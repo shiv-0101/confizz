@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AI Confizz - Share Your Secrets{% endblock %}</title>
+    
+    <!-- Material UI via CDN -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    
+    <!-- Material UI Components CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/@mui/material@5.14.0/dist/mui.min.css" rel="stylesheet">
+    
+    <!-- Reddit-like Theme CSS -->
+    <link rel="stylesheet" href="{% static 'css/reddit-theme.css' %}">
+    
+    <style>
+        /* Additional customizations */
+        html, body, #root {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="reddit-appbar">
+        <div class="reddit-navbar">
+            <a href="{% url 'confessions:confession_list' %}" class="reddit-logo">
+                <span class="material-icons" style="font-size: 2rem; color: #818cf8;">forum</span>
+                Confizz
+            </a>
+            
+            <div class="reddit-nav-links">
+                {% if user.is_authenticated %}
+                    <span style="color: var(--text-secondary); font-size: 0.9rem;">
+                        Welcome, <strong style="color: var(--text-primary);">{{ user.username }}</strong>
+                    </span>
+                    <a href="{% url 'confessions:user_dashboard' %}" title="Dashboard">
+                        <span class="material-icons" style="font-size: 1.2rem;">dashboard</span>
+                    </a>
+                    <a href="{% url 'confessions:confession_list' %}">Home</a>
+                    <a href="{% url 'confessions:logout' %}">Logout</a>
+                {% else %}
+                    <a href="{% url 'confessions:login' %}">Login</a>
+                    <a href="{% url 'confessions:signup' %}" class="reddit-btn" style="padding: 0.5rem 1.25rem; font-size: 0.85rem; margin: 0;">Sign Up</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Messages/Alerts -->
+    {% if messages %}
+        <div style="max-width: 1400px; margin: 1rem auto; padding: 0 1rem;">
+            {% for message in messages %}
+                <div class="reddit-alert {% if message.tags %}reddit-alert-{{ message.tags }}{% else %}reddit-alert-info{% endif %}">
+                    <span class="material-icons" style="vertical-align: middle; margin-right: 0.5rem;">{{ message.tags|default:'info' }}</span>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Main Content - Centered Layout -->
+    <div style="display: flex; align-items: center; justify-content: center; min-height: calc(100vh - 120px); padding: 2rem 1rem;">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Material UI JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/@mui/material@5.14.0/dist/mui.min.js"></script>
+    
+    <!-- Custom Scripts -->
+    <script src="{% static 'js/reddit-ui.js' %}"></script>
+    
+    {% block scripts %}{% endblock %}
+</body>
+</html>
