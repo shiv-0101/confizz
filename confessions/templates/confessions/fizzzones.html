@@ -1,14 +1,24 @@
-{% extends 'confessions/base.html' %}
+{% extends 'confessions/base-centered.html' %}
 
 {% block title %}Fizzzones - Communities - AI Confizz{% endblock %}
 
 {% block extra_css %}
 <style>
+    /* Full-width centered layout - override base-centered wrapper */
+    body > div:nth-last-of-type(2) {
+        display: block !important;
+        min-height: auto !important;
+        padding: 0 !important;
+        align-items: unset !important;
+        justify-content: unset !important;
+    }
+
     /* Fizzzones Page Styles */
     .fizzzones-container {
-        max-width: 1400px;
-        margin: 0 auto;
-        padding: 0 1rem;
+        max-width: 1200px;
+        margin: 0 auto !important;
+        padding: 2rem 1rem;
+        width: 100%;
     }
 
     /* Hero Section */
