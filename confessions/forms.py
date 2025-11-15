@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from .models import Confession, Comment
 
 class ConfessionForm(forms.ModelForm):
+    """Form for creating and editing confessions."""
     class Meta:
         model = Confession
         fields = ['content']

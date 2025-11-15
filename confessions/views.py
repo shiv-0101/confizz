@@ -1,3 +1,4 @@
+"""Views for handling confessions, comments, and user authentication with AI summarization."""
 import json
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse

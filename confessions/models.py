@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Confession(models.Model):
+    """Model representing a user confession with optional anonymity."""
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     upvotes = models.IntegerField(default=0)
