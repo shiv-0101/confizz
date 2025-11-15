@@ -1,39 +1,37 @@
-{% extends 'confessions/base.html' %}
+{% extends 'confessions/base-centered.html' %}
 
 {% block title %}Login - AI Confizz{% endblock %}
 
 {% block content %}
-<div class="reddit-auth-container">
-    <div class="reddit-auth-form">
-        <h1><span class="material-icons" style="vertical-align: middle; margin-right: 0.75rem; font-size: 2rem;">login</span>Welcome Back</h1>
-        <p>Sign in to your Confizz account</p>
+<div class="reddit-auth-form">
+    <h1><span class="material-icons" style="vertical-align: middle; margin-right: 0.75rem; font-size: 2rem;">login</span>Welcome Back</h1>
+    <p>Sign in to your Confizz account</p>
+    
+    <form method="post" novalidate>
+        {% csrf_token %}
         
-        <form method="post" novalidate>
-            {% csrf_token %}
-            
-            {% for field in form %}
-                <div class="reddit-form-group">
-                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                    {{ field }}
-                    {% if field.errors %}
-                        <div style="color: var(--error-color); font-size: 0.85rem; margin-top: 0.375rem;">
-                            {% for error in field.errors %}
-                                <div>{{ error }}</div>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
-            {% endfor %}
-            
-            <button type="submit" class="reddit-btn" style="width: 100%; margin-top: 1rem;">
-                <span class="material-icons" style="vertical-align: middle; margin-right: 0.5rem; font-size: 1.1rem;">arrow_forward</span>
-                Sign In
-            </button>
-        </form>
+        {% for field in form %}
+            <div class="reddit-form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <div style="color: var(--error-color); font-size: 0.85rem; margin-top: 0.375rem;">
+                        {% for error in field.errors %}
+                            <div>{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
         
-        <div class="auth-link">
-            Don't have an account? <a href="{% url 'confessions:signup' %}">Create one here</a>
-        </div>
+        <button type="submit" class="reddit-btn" style="width: 100%; margin-top: 1rem;">
+            <span class="material-icons" style="vertical-align: middle; margin-right: 0.5rem; font-size: 1.1rem;">arrow_forward</span>
+            Sign In
+        </button>
+    </form>
+    
+    <div class="auth-link">
+        Don't have an account? <a href="{% url 'confessions:signup' %}">Create one here</a>
     </div>
 </div>
 {% endblock %}
