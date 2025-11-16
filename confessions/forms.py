@@ -1,7 +1,17 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Confession, Comment
+from .models import Confession, Comment, Community
+
+class CommunityForm(forms.ModelForm):
+    """Form for creating and editing communities."""
+    class Meta:
+        model = Community
+        fields = ['name', 'description']
+        widgets = {
+            'name': forms.TextInput(attrs={'placeholder': 'Community name'}),
+            'description': forms.Textarea(attrs={'placeholder': 'Community description'}),
+        }
 
 class ConfessionForm(forms.ModelForm):
     """Form for creating and editing confessions."""
