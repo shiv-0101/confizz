@@ -61,6 +61,14 @@
                             <span class="reddit-post-author">u/Anonymous</span>
                         {% endif %}
                         <span class="reddit-post-meta">{{ confession.created_at|timesince }} ago</span>
+                        {% if confession.community %}
+                            <span class="reddit-post-meta" style="margin-left: auto;">
+                                <span class="material-icons" style="font-size: 0.9rem; vertical-align: middle;">public</span>
+                                <a href="{% url 'confessions:community_detail' slug=confession.community.slug %}" style="color: var(--primary-color); text-decoration: none;">
+                                    {{ confession.community.name }}
+                                </a>
+                            </span>
+                        {% endif %}
                     </div>
 
                     <p class="reddit-post-text">{{ confession.content }}</p>

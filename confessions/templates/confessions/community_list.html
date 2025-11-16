@@ -1,0 +1,398 @@
+{% extends 'confessions/base-centered.html' %}
+
+{% block title %}Communities - Confizz{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Override default layout for centered content */
+    .reddit-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0;
+    }
+
+    .communities-wrapper {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+
+    /* Hero Section */
+    .communities-hero {
+        background: linear-gradient(135deg, var(--primary-color) 0%, #6366f1 100%);
+        color: white;
+        padding: 4rem 2rem;
+        border-radius: 12px;
+        margin-bottom: 3rem;
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(129, 140, 248, 0.2);
+    }
+
+    .communities-hero h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .communities-hero p {
+        font-size: 1.1rem;
+        opacity: 0.95;
+        margin-bottom: 1.5rem;
+    }
+
+    .communities-hero-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .communities-btn {
+        padding: 0.75rem 1.75rem;
+        border-radius: 20px;
+        border: none;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.95rem;
+    }
+
+    .communities-btn-primary {
+        background-color: white;
+        color: var(--primary-color);
+    }
+
+    .communities-btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .communities-btn-secondary {
+        background-color: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: 2px solid white;
+    }
+
+    .communities-btn-secondary:hover {
+        background-color: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+    }
+
+    /* Section Header */
+    .communities-section-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid var(--border-color);
+    }
+
+    .communities-section-header h2 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .communities-section-header .material-icons {
+        font-size: 2rem;
+        color: var(--primary-color);
+    }
+
+    /* Communities Grid */
+    .communities-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .community-card {
+        background: linear-gradient(135deg, var(--surface-color) 0%, var(--surface-light) 100%);
+        border-radius: 12px;
+        border: 2px solid var(--border-color);
+        overflow: hidden;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        min-height: 280px;
+    }
+
+    .community-card:hover {
+        border-color: var(--primary-color);
+        transform: translateY(-8px);
+        box-shadow: 0 12px 24px rgba(129, 140, 248, 0.15);
+    }
+
+    .community-card-header {
+        background: linear-gradient(135deg, var(--primary-color) 0%, #6366f1 100%);
+        padding: 2rem 1.5rem;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 140px;
+    }
+
+    .community-card-header-left {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .community-icon {
+        width: 80px;
+        height: 80px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        flex-shrink: 0;
+    }
+
+    .community-header-info h3 {
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin: 0;
+        margin-bottom: 0.25rem;
+    }
+
+    .community-header-info p {
+        font-size: 0.85rem;
+        opacity: 0.9;
+        margin: 0;
+    }
+
+    .community-card-badge {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 0.25rem 0.75rem;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .community-card-body {
+        padding: 1.5rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .community-description {
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        flex: 1;
+    }
+
+    .community-stats {
+        display: flex;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border-color);
+        flex-wrap: wrap;
+    }
+
+    .community-stat {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .community-stat-number {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--primary-color);
+    }
+
+    .community-stat-label {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+
+    .community-card-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .reddit-btn {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.6rem 1.2rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.95rem;
+        flex: 1;
+    }
+
+    .reddit-btn:hover {
+        background-color: #6366f1;
+        box-shadow: 0 4px 12px rgba(129, 140, 248, 0.3);
+    }
+
+    .reddit-btn-secondary {
+        background-color: transparent;
+        color: var(--text-secondary);
+        border: 1px solid var(--border-color);
+        padding: 0.6rem;
+    }
+
+    .reddit-btn-secondary:hover {
+        background-color: var(--surface-light);
+        color: var(--text-primary);
+    }
+
+    /* Empty State */
+    .communities-empty {
+        text-align: center;
+        padding: 3rem 2rem;
+        color: var(--text-secondary);
+    }
+
+    .communities-empty .material-icons {
+        font-size: 4rem;
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .communities-hero h1 {
+            font-size: 1.75rem;
+        }
+
+        .communities-hero {
+            padding: 2rem 1.5rem;
+        }
+
+        .community-card-header {
+            min-height: 120px;
+        }
+
+        .community-icon {
+            width: 60px;
+            height: 60px;
+            font-size: 2rem;
+        }
+
+        .community-header-info h3 {
+            font-size: 1.1rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="communities-wrapper">
+    <!-- Hero Section -->
+    <div class="communities-hero">
+        <h1>
+            <span class="material-icons">public</span>
+            Fizzzones
+        </h1>
+        <p>Discover and join communities of people sharing their authentic stories and confessions</p>
+        <div class="communities-hero-buttons">
+            {% if user.is_authenticated %}
+                <a href="{% url 'confessions:community_create' %}" class="communities-btn communities-btn-primary">
+                    <span class="material-icons">add</span>
+                    Create Fizzzone
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Communities Section -->
+    <div class="communities-section-header">
+        <h2>
+            <span class="material-icons">star</span>
+            All Communities
+        </h2>
+    </div>
+
+    <!-- Communities Grid -->
+    {% if communities %}
+        <div class="communities-grid">
+            {% for community in communities %}
+                <div class="community-card">
+                    <div class="community-card-header">
+                        <div class="community-card-header-left">
+                            <div class="community-icon">🎓</div>
+                            <div class="community-header-info">
+                                <h3>{{ community.name }}</h3>
+                                <p>Created by {{ community.created_by.username }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="community-card-body">
+                        <p class="community-description">
+                            {{ community.description|truncatewords:30 }}
+                        </p>
+                        <div class="community-stats">
+                            <div class="community-stat">
+                                <span class="community-stat-number">{{ community.confessions.count }}</span>
+                                <span class="community-stat-label">Confessions</span>
+                            </div>
+                            <div class="community-stat">
+                                <span class="community-stat-number">{{ community.created_at|date:'M d' }}</span>
+                                <span class="community-stat-label">Created</span>
+                            </div>
+                        </div>
+                        <div class="community-card-actions">
+                            <a href="{% url 'confessions:community_detail' slug=community.slug %}" class="reddit-btn" style="text-decoration: none;">
+                                View
+                            </a>
+                            {% if user.is_authenticated and user == community.created_by %}
+                                <a href="{% url 'confessions:community_delete' slug=community.slug %}" class="reddit-btn reddit-btn-secondary" style="text-decoration: none;">
+                                    <span class="material-icons">delete</span>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="communities-empty">
+            <span class="material-icons">folder_open</span>
+            <h2>No Communities Yet</h2>
+            <p>Be the first to create a community!</p>
+            {% if user.is_authenticated %}
+                <a href="{% url 'confessions:community_create' %}" class="reddit-btn" style="margin-top: 1rem; text-decoration: none;">
+                    <span class="material-icons">add_circle</span>
+                    Create Community
+                </a>
+            {% else %}
+                <p style="margin-top: 1rem;">
+                    <a href="{% url 'confessions:login' %}" style="color: var(--primary-color);">Login</a> to create a community
+                </p>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

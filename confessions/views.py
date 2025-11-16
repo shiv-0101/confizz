@@ -11,8 +11,8 @@ from django.contrib.auth.decorators import login_required
 import os
 import google.generativeai as genai
 from django.conf import settings
-from .models import Confession, Comment
-from .forms import ConfessionForm, CommentForm, SignUpForm
+from .models import Confession, Comment, Community
+from .forms import ConfessionForm, CommentForm, SignUpForm, CommunityForm
 
 @csrf_exempt
 @require_POST
@@ -126,3 +126,58 @@ def hello_world(request):
 
 def fizzzones(request):
     return render(request, 'confessions/fizzzones.html')
+
+# Community Views
+
+def community_list(request):
+    """Display all communities with an option to create a new one."""
+    communities = Community.objects.all().order_by('-created_at')
+    return render(request, 'confessions/community_list.html', {
+        'communities': communities,
+    })
+
+@login_required
+def community_create(request):
+    """Create a new community (login required)."""
+    if request.method == 'POST':
+        form = CommunityForm(request.POST)
+        if form.is_valid():
+            community = form.save(commit=False)
+            community.created_by = request.user
+            community.save()
+            messages.success(request, 'Community created successfully!')
+            return redirect('confessions:community_detail', slug=community.slug)
+    else:
+        form = CommunityForm()
+    return render(request, 'confessions/community_form.html', {'form': form})
+
+def community_detail(request, slug):
+    """Display community details and list confessions in that community."""
+    community = get_object_or_404(Community, slug=slug)
+    confessions = community.confessions.all().order_by('-created_at')
+    comment_form = CommentForm()
+    return render(request, 'confessions/community_detail.html', {
+        'community': community,
+        'confessions': confessions,
+        'comment_form': comment_form,
+    })
+
+@login_required
+def community_delete(request, slug):
+    """Delete a community (only creator can delete)."""
+    community = get_object_or_404(Community, slug=slug)
+    
+    # Check if the current user is the creator
+    if community.created_by != request.user:
+        messages.error(request, 'You do not have permission to delete this community.')
+        return redirect('confessions:community_detail', slug=slug)
+    
+    if request.method == 'POST':
+        community.delete()
+        messages.success(request, 'Community deleted successfully!')
+        return redirect('confessions:community_list')
+    
+    return render(request, 'confessions/community_confirm_delete.html', {
+        'community': community,
+    })
+

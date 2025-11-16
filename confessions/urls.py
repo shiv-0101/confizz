@@ -14,4 +14,10 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path("hello/", views.hello_world, name="hello_world"),
+    path("fizzzones/", views.fizzzones, name="fizzzones"),
+    # Community URLs
+    path('communities/', views.community_list, name='community_list'),
+    path('communities/create/', views.community_create, name='community_create'),
+    path('communities/<slug:slug>/', views.community_detail, name='community_detail'),
+    path('communities/<slug:slug>/delete/', views.community_delete, name='community_delete'),
 ]

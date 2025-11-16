@@ -1,0 +1,119 @@
+{% extends 'confessions/base-centered.html' %}
+
+{% block title %}{% if form.instance.pk %}Edit{% else %}Create{% endif %} Community - Confizz{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 2rem auto; padding: 0 1rem;">
+    <h1 style="margin-bottom: 2rem; display: flex; align-items: center; gap: 0.5rem;">
+        <span class="material-icons">create</span>
+        {% if form.instance.pk %}Edit Community{% else %}Create Community{% endif %}
+    </h1>
+
+    <div class="reddit-post" style="background-color: var(--surface-color); border: 1px solid var(--border-color); border-radius: 8px;">
+        <div class="reddit-post-container" style="padding: 2rem;">
+            <form method="post">
+                {% csrf_token %}
+
+                <!-- Form Fields -->
+                <div style="margin-bottom: 1.5rem;">
+                    <label for="{{ form.name.id_for_label }}" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">
+                        Community Name
+                    </label>
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                        <div style="color: #ef4444; font-size: 0.9rem; margin-top: 0.5rem;">
+                            {% for error in form.name.errors %}{{ error }}{% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <label for="{{ form.description.id_for_label }}" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">
+                        Description
+                    </label>
+                    {{ form.description }}
+                    {% if form.description.errors %}
+                        <div style="color: #ef4444; font-size: 0.9rem; margin-top: 0.5rem;">
+                            {% for error in form.description.errors %}{{ error }}{% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Form Styling -->
+                <style>
+                    input[type="text"],
+                    textarea {
+                        width: 100%;
+                        padding: 0.75rem;
+                        border: 1px solid var(--border-color);
+                        border-radius: 4px;
+                        background-color: var(--background-color);
+                        color: var(--text-primary);
+                        font-family: inherit;
+                        font-size: 1rem;
+                        transition: all 0.3s ease;
+                        box-sizing: border-box;
+                    }
+
+                    input[type="text"]:focus,
+                    textarea:focus {
+                        outline: none;
+                        border-color: var(--primary-color);
+                        box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.1);
+                    }
+
+                    textarea {
+                        resize: vertical;
+                        min-height: 120px;
+                    }
+                </style>
+
+                <!-- Buttons -->
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="submit" class="reddit-btn" style="flex: 1;">
+                        <span class="material-icons" style="margin-right: 0.5rem;">save</span>
+                        {% if form.instance.pk %}Save Changes{% else %}Create Community{% endif %}
+                    </button>
+                    <a href="{% url 'confessions:community_list' %}" class="reddit-btn reddit-btn-secondary" style="flex: 1; text-align: center; text-decoration: none;">
+                        <span class="material-icons" style="margin-right: 0.5rem;">close</span>
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .reddit-btn {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.6rem 1.2rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.95rem;
+    }
+
+    .reddit-btn:hover {
+        background-color: #6366f1;
+        box-shadow: 0 4px 12px rgba(129, 140, 248, 0.3);
+    }
+
+    .reddit-btn-secondary {
+        background-color: transparent;
+        color: var(--text-secondary);
+        border: 1px solid var(--border-color);
+    }
+
+    .reddit-btn-secondary:hover {
+        background-color: var(--surface-light);
+        color: var(--text-primary);
+    }
+</style>
+{% endblock %}

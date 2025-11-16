@@ -1,0 +1,197 @@
+{% extends 'confessions/base-centered.html' %}
+
+{% block title %}{{ community.name }} - Confizz{% endblock %}
+
+{% block content %}
+<div style="max-width: 1200px; margin: 0 auto; padding: 2rem 1rem;">
+    <!-- Community Header -->
+    <div class="reddit-post" style="margin-bottom: 2rem; background: linear-gradient(135deg, var(--primary-color) 0%, #6366f1 100%);">
+        <div class="reddit-post-container" style="padding: 2rem; color: white;">
+            <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 1rem;">
+                <div style="flex: 1;">
+                    <h1 style="margin: 0 0 0.5rem 0; font-size: 2rem;">{{ community.name }}</h1>
+                    <p style="margin: 0 0 1rem 0; opacity: 0.95; line-height: 1.6;">
+                        {{ community.description }}
+                    </p>
+                    <div style="display: flex; gap: 2rem; flex-wrap: wrap; margin-top: 1.5rem; opacity: 0.95;">
+                        <div>
+                            <div style="font-size: 1.5rem; font-weight: 700;">{{ community.confessions.count }}</div>
+                            <div style="font-size: 0.9rem;">Confessions</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 1.5rem; font-weight: 700;">{{ community.created_at|date:'M d, Y' }}</div>
+                            <div style="font-size: 0.9rem;">Created</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.95rem; font-weight: 600;">{{ community.created_by.username }}</div>
+                            <div style="font-size: 0.9rem;">Creator</div>
+                        </div>
+                    </div>
+                </div>
+                {% if user.is_authenticated and user == community.created_by %}
+                    <div style="display: flex; gap: 0.5rem;">
+                        <a href="{% url 'confessions:community_delete' slug=community.slug %}" class="reddit-btn" style="text-decoration: none; background-color: #ef4444;">
+                            <span class="material-icons">delete</span>
+                            Delete Community
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Area -->
+    <div style="display: grid; grid-template-columns: 1fr 300px; gap: 2rem; margin-bottom: 2rem;">
+        <!-- Confessions List -->
+        <div>
+            <h2 style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                <span class="material-icons">forum</span>
+                Confessions in {{ community.name }}
+            </h2>
+
+            {% if confessions %}
+                {% for confession in confessions %}
+                    <article class="reddit-post" style="margin-bottom: 1.5rem;">
+                        <div class="reddit-post-container">
+                            <!-- Confession Content -->
+                            <div style="padding: 1.5rem;">
+                                <p style="margin: 0 0 1rem 0; line-height: 1.6; color: var(--text-primary);">
+                                    {{ confession.content }}
+                                </p>
+
+                                <!-- Confession Meta -->
+                                <div style="display: flex; flex-wrap: wrap; gap: 1rem; font-size: 0.85rem; color: var(--text-secondary); margin: 1rem 0; padding-top: 1rem; border-top: 1px solid var(--border-color);">
+                                    <span>
+                                        <span class="material-icons" style="font-size: 1rem; vertical-align: middle;">schedule</span>
+                                        {{ confession.created_at|timesince }} ago
+                                    </span>
+                                    {% if confession.author %}
+                                        <span>
+                                            <span class="material-icons" style="font-size: 1rem; vertical-align: middle;">person</span>
+                                            {{ confession.author.username }}
+                                        </span>
+                                    {% else %}
+                                        <span>
+                                            <span class="material-icons" style="font-size: 1rem; vertical-align: middle;">masks</span>
+                                            Anonymous
+                                        </span>
+                                    {% endif %}
+                                    <span>
+                                        <span class="material-icons" style="font-size: 1rem; vertical-align: middle;">thumb_up</span>
+                                        {{ confession.upvotes }} upvotes
+                                    </span>
+                                </div>
+
+                                <!-- Comments Section -->
+                                {% if confession.comments.all %}
+                                    <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-color);">
+                                        <h4 style="margin: 0 0 0.75rem 0; color: var(--text-secondary);">
+                                            {{ confession.comments.count }} Comments
+                                        </h4>
+                                        <div style="background-color: var(--surface-light); padding: 1rem; border-radius: 4px;">
+                                            {% for comment in confession.comments.all|slice:":3" %}
+                                                <div style="margin-bottom: 0.75rem; font-size: 0.9rem;">
+                                                    <span style="font-weight: 600; color: var(--primary-color);">
+                                                        {% if comment.author %}{{ comment.author.username }}{% else %}Anonymous{% endif %}:
+                                                    </span>
+                                                    <p style="margin: 0.25rem 0 0 0; color: var(--text-secondary);">{{ comment.content|truncatewords:20 }}</p>
+                                                </div>
+                                            {% endfor %}
+                                            {% if confession.comments.count > 3 %}
+                                                <p style="margin: 0.75rem 0 0 0; color: var(--primary-color); font-size: 0.85rem; font-weight: 600;">
+                                                    +{{ confession.comments.count|add:"-3" }} more comments
+                                                </p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </article>
+                {% endfor %}
+            {% else %}
+                <div style="text-align: center; padding: 3rem 2rem; background-color: var(--surface-color); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-secondary);">
+                    <span class="material-icons" style="font-size: 3rem; opacity: 0.5; display: block; margin-bottom: 1rem;">forum</span>
+                    <p>No confessions yet in this community.</p>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'confessions:user_dashboard' %}" class="reddit-btn" style="margin-top: 1rem; text-decoration: none;">
+                            Be the first to share
+                        </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Sidebar -->
+        <aside style="background-color: var(--surface-color); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem;">
+            <h3 style="margin: 0 0 1rem 0; display: flex; align-items: center; gap: 0.5rem;">
+                <span class="material-icons">info</span>
+                About
+            </h3>
+            
+            <div style="margin-bottom: 1.5rem; font-size: 0.9rem;">
+                <p style="margin: 0 0 0.5rem 0; color: var(--text-secondary);">
+                    <strong>Creator:</strong> {{ community.created_by.username }}
+                </p>
+                <p style="margin: 0 0 0.5rem 0; color: var(--text-secondary);">
+                    <strong>Created:</strong> {{ community.created_at|date:'M d, Y' }}
+                </p>
+                <p style="margin: 0; color: var(--text-secondary);">
+                    <strong>Confessions:</strong> {{ community.confessions.count }}
+                </p>
+            </div>
+
+            {% if user.is_authenticated %}
+                <a href="{% url 'confessions:community_list' %}" class="reddit-btn" style="width: 100%; text-align: center; text-decoration: none; box-sizing: border-box;">
+                    <span class="material-icons" style="margin-right: 0.5rem;">arrow_back</span>
+                    Back to Communities
+                </a>
+            {% endif %}
+        </aside>
+    </div>
+</div>
+
+<style>
+    .reddit-post {
+        background-color: var(--surface-color);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .reddit-post:hover {
+        border-color: var(--primary-color);
+        box-shadow: 0 4px 12px rgba(129, 140, 248, 0.1);
+    }
+
+    .reddit-btn {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.6rem 1.2rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.95rem;
+    }
+
+    .reddit-btn:hover {
+        background-color: #6366f1;
+        box-shadow: 0 4px 12px rgba(129, 140, 248, 0.3);
+    }
+
+    @media (max-width: 768px) {
+        div[style*="display: grid"][style*="grid-template-columns: 1fr 300px"] {
+            grid-template-columns: 1fr !important;
+        }
+
+        aside {
+            order: -1;
+        }
+    }
+</style>
+{% endblock %}
