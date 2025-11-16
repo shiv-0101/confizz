@@ -318,7 +318,7 @@
         <p>Discover and join communities of people sharing their authentic stories and confessions</p>
         <div class="communities-hero-buttons">
             {% if user.is_authenticated %}
-                <a href="{% url 'confessions:community_create' %}" class="communities-btn communities-btn-primary">
+                <a href="{% url 'community-create' %}" class="communities-btn communities-btn-primary">
                     <span class="material-icons">add</span>
                     Create Fizzzone
                 </a>
@@ -363,11 +363,11 @@
                             </div>
                         </div>
                         <div class="community-card-actions">
-                            <a href="{% url 'confessions:community_detail' slug=community.slug %}" class="reddit-btn" style="text-decoration: none;">
+                            <a href="{% url 'community-detail' slug=community.slug %}" class="reddit-btn" style="text-decoration: none;">
                                 View
                             </a>
                             {% if user.is_authenticated and user == community.created_by %}
-                                <a href="{% url 'confessions:community_delete' slug=community.slug %}" class="reddit-btn reddit-btn-secondary" style="text-decoration: none;">
+                                <a href="{% url 'community-delete' slug=community.slug %}" class="reddit-btn reddit-btn-secondary" style="text-decoration: none;">
                                     <span class="material-icons">delete</span>
                                 </a>
                             {% endif %}
@@ -382,7 +382,7 @@
             <h2>No Communities Yet</h2>
             <p>Be the first to create a community!</p>
             {% if user.is_authenticated %}
-                <a href="{% url 'confessions:community_create' %}" class="reddit-btn" style="margin-top: 1rem; text-decoration: none;">
+                <a href="{% url 'community-create' %}" class="reddit-btn" style="margin-top: 1rem; text-decoration: none;">
                     <span class="material-icons">add_circle</span>
                     Create Community
                 </a>

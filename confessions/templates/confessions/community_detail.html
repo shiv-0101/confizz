@@ -30,7 +30,7 @@
                 </div>
                 {% if user.is_authenticated and user == community.created_by %}
                     <div style="display: flex; gap: 0.5rem;">
-                        <a href="{% url 'confessions:community_delete' slug=community.slug %}" class="reddit-btn" style="text-decoration: none; background-color: #ef4444;">
+                        <a href="{% url 'community-delete' slug=community.slug %}" class="reddit-btn" style="text-decoration: none; background-color: #ef4444;">
                             <span class="material-icons">delete</span>
                             Delete Community
                         </a>
@@ -142,7 +142,7 @@
             </div>
 
             {% if user.is_authenticated %}
-                <a href="{% url 'confessions:community_list' %}" class="reddit-btn" style="width: 100%; text-align: center; text-decoration: none; box-sizing: border-box;">
+                <a href="{% url 'community-list' %}" class="reddit-btn" style="width: 100%; text-align: center; text-decoration: none; box-sizing: border-box;">
                     <span class="material-icons" style="margin-right: 0.5rem;">arrow_back</span>
                     Back to Communities
                 </a>
