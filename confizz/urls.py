@@ -17,6 +17,7 @@ Including another URLconf
 # confizz/urls.py
 from django.contrib import admin
 from django.urls import path, include
+from confessions import views as confessions_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -24,6 +25,8 @@ urlpatterns = [
     path("", include("home.urls")),
     # include confessions app urls with a prefix
     path("confessions/", include("confessions.urls", namespace="confessions")),
+    # direct path to fizzzones
+    path("fizzzones/", confessions_views.fizzzones, name="fizzzones"),
 ]
     
 
