@@ -1,6 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+class Community(models.Model):
+    """Model representing a community."""
+    name = models.CharField(max_length=100, unique=True)
+    description = models.TextField()
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
 class Confession(models.Model):
     """Model representing a user confession with optional anonymity."""
     content = models.TextField()
