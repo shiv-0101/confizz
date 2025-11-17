@@ -1,8 +1,0 @@
-features;
-	- remove comment button but add icon and number of comment beside icon.
-	- a u/user type above the confession to know who made confession and u/user to know which user commented.
-
-	- make the upvotes to be stored so that after refresh they don't fade away.
-
-	- I wanna be anonymous option along with login and signup in which user will not need to submit email, just username and password.
-	

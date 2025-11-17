@@ -25,8 +25,6 @@ urlpatterns = [
     path("", include("home.urls")),
     # include confessions app urls with a prefix
     path("confessions/", include("confessions.urls", namespace="confessions")),
-    # direct path to fizzzones
-    path("fizzzones/", confessions_views.fizzzones, name="fizzzones"),
     # community urls at root level
     path("communities/", confessions_views.community_list, name="community-list"),
     path("communities/create/", confessions_views.community_create, name="community-create"),
