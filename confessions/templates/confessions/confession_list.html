@@ -36,6 +36,27 @@
         </form>
     </div>
 
+    <!-- Filter Section -->
+    <div style="background-color: var(--surface-color); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem;">
+        <form method="get" action="{% url 'confessions:confession_list' %}" style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;">
+            <input type="text" name="search" placeholder="Search confessions..." value="{{ search_query }}" style="flex: 1; min-width: 150px; padding: 0.5rem; border-radius: 4px; border: 1px solid var(--border-color); background-color: var(--background-color); color: var(--text-primary); font-size: 0.9rem;">
+            <select name="date_filter" style="padding: 0.5rem; border-radius: 4px; border: 1px solid var(--border-color); background-color: var(--background-color); color: var(--text-primary); font-size: 0.9rem;">
+                <option value="">All Time</option>
+                <option value="today" {% if date_filter == 'today' %}selected{% endif %}>Today</option>
+                <option value="week" {% if date_filter == 'week' %}selected{% endif %}>This Week</option>
+                <option value="month" {% if date_filter == 'month' %}selected{% endif %}>This Month</option>
+            </select>
+            <button type="submit" class="reddit-btn" style="padding: 0.5rem 1rem; font-size: 0.9rem;">
+                <span class="material-icons" style="font-size: 0.9rem;">search</span>
+            </button>
+            {% if search_query or date_filter %}
+                <a href="{% url 'confessions:confession_list' %}" class="reddit-btn" style="padding: 0.5rem 1rem; background-color: var(--surface-light); text-decoration: none; display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.9rem;">
+                    <span class="material-icons" style="font-size: 0.9rem;">clear</span>
+                </a>
+            {% endif %}
+        </form>
+    </div>
+
     <!-- Confessions Feed -->
     {% if confessions %}
         {% for confession in confessions %}
@@ -60,11 +81,11 @@
                         {% else %}
                             <span class="reddit-post-author">u/Anonymous</span>
                         {% endif %}
-                        <span class="reddit-post-meta">{{ confession.created_at|timesince }} ago</span>
+                        <span class="reddit-post-meta">{{ confession.created_at|date:"M d, Y - H:i" }}</span>
                         {% if confession.community %}
                             <span class="reddit-post-meta" style="margin-left: auto;">
                                 <span class="material-icons" style="font-size: 0.9rem; vertical-align: middle;">public</span>
-                                <a href="{% url 'confessions:community_detail' slug=confession.community.slug %}" style="color: var(--primary-color); text-decoration: none;">
+                                <a href="{% url 'community-detail' slug=confession.community.slug %}" style="color: var(--primary-color); text-decoration: none;">
                                     {{ confession.community.name }}
                                 </a>
                             </span>
@@ -100,7 +121,7 @@
                                         {% else %}
                                             <span class="reddit-comment-author">u/Anonymous</span>
                                         {% endif %}
-                                        <span class="reddit-comment-time">{{ comment.created_at|timesince }} ago</span>
+                                        <span class="reddit-comment-time">{{ comment.created_at|date:"M d, Y - H:i" }}</span>
                                     </div>
                                     <div class="reddit-comment-text">{{ comment.content }}</div>
                                 </div>
