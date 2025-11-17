@@ -59,10 +59,33 @@ def confession_list(request):
             return redirect('confessions:confession_list')
 
     confessions = Confession.objects.all().order_by('-created_at')
+    
+    # Filter by search query
+    search_query = request.GET.get('search', '').strip()
+    if search_query:
+        confessions = confessions.filter(content__icontains=search_query)
+    
+    # Filter by date
+    date_filter = request.GET.get('date_filter', '')
+    if date_filter:
+        from django.utils import timezone
+        from datetime import timedelta
+        now = timezone.now()
+        if date_filter == 'today':
+            confessions = confessions.filter(created_at__date=now.date())
+        elif date_filter == 'week':
+            confessions = confessions.filter(created_at__gte=now - timedelta(days=7))
+        elif date_filter == 'month':
+            confessions = confessions.filter(created_at__gte=now - timedelta(days=30))
+        elif date_filter == 'all':
+            pass  # No additional filter
+    
     comment_form = CommentForm()
     return render(request, 'confessions/confession_list.html', {
         'confessions': confessions,
         'comment_form': comment_form,
+        'search_query': search_query,
+        'date_filter': date_filter,
     })
 
 @login_required
