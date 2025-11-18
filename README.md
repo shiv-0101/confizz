@@ -39,11 +39,12 @@ We’re currently:
 ## 🎯 MVP Feature Ideas
 
 - [x] Anonymous confessions
-- [ ] AI replies (150 words max, sarcastic/funny tone)
-- [X] Fizzzones based on themes
-- [X] Likes & comments
-- [ ] Simple anonymous login
-- [ ] Responsive web UI
+- [x] AI-powered comment summarization (using Gemini)
+- [x] Community-based organization (Fizzzones)
+- [x] Likes & comments
+- [x] User authentication (signup/login/logout)
+- [x] Responsive web UI with Material Design
+- [x] Search & date-based filtering for confessions
 
 ---
 
