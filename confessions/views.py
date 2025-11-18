@@ -12,7 +12,7 @@ import os
 import google.generativeai as genai
 from django.conf import settings
 from .models import Confession, Comment, Community
-from .forms import CommentForm, SignUpForm, CommunityForm
+from .forms import ConfessionForm, CommentForm, SignUpForm, CommunityForm
 
 @csrf_exempt
 @require_POST
@@ -143,6 +143,12 @@ def logout_view(request):
     logout(request)
     messages.info(request, 'Logged out successfully!')
     return redirect('confessions:confession_list')
+
+def hello_world(request):
+    return render(request, "confessions/helloworld.html")
+
+def fizzzones(request):
+    return render(request, 'confessions/fizzzones.html')
 
 # Community Views
 

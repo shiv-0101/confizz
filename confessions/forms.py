@@ -13,6 +13,15 @@ class CommunityForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'placeholder': 'Community description'}),
         }
 
+class ConfessionForm(forms.ModelForm):
+    """Form for creating and editing confessions."""
+    class Meta:
+        model = Confession
+        fields = ['content']
+        widgets = {
+            'content': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Share your confession...'}),
+        }
+
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment

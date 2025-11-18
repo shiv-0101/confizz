@@ -1,0 +1,18 @@
+{% extends 'confessions/base-centered.html' %}
+
+{% block title %}Fizzzones - Communities - AI Confizz{% endblock %}
+
+{% block content %}
+<script>
+    // Redirect to the new community_list view
+    window.location.href = "{% url 'confessions:community_list' %}";
+</script>
+
+<div style="text-align: center; padding: 3rem 1rem;">
+    <p>Redirecting to Communities...</p>
+    <p>If not redirected, <a href="{% url 'confessions:community_list' %}">click here</a>.</p>
+</div>
+
+<!-- REMOVED: All dummy community data has been moved to the database. -->
+<!-- The community_list view now displays communities dynamically from the database. -->
+{% endblock %}
