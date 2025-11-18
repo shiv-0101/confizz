@@ -120,6 +120,11 @@ USE_I18N = True
 
 USE_TZ = True
 
+# Authentication redirect settings
+# Ensure login_required redirects to the app's login view
+LOGIN_URL = '/confessions/login/'
+LOGIN_REDIRECT_URL = '/confessions/'
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
